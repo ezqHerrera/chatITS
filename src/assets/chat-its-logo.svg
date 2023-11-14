@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="149.47581mm"
-   height="26.486931mm"
-   viewBox="0 0 149.47581 26.486931"
+   width="57.220577mm"
+   height="10.31522mm"
+   viewBox="0 0 57.220575 10.31522"
    version="1.1"
    id="svg1"
    sodipodi:docname="chat-its-logo.svg"
@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.68111408"
-     inkscape:cx="280.42292"
-     inkscape:cy="62.39777"
-     inkscape:window-width="1920"
-     inkscape:window-height="1009"
+     inkscape:zoom="2.7244563"
+     inkscape:cx="101.48814"
+     inkscape:cy="8.9926199"
+     inkscape:window-width="1366"
+     inkscape:window-height="697"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -51,18 +51,18 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-30.262095,-135.25653)">
+     transform="translate(-78.416736,-143.60788)">
     <text
        xml:space="preserve"
-       transform="matrix(0.68785351,0,0,0.68785351,-66.08979,-142.8806)"
+       transform="matrix(0.68785351,0,0,0.68785351,-15.884765,-129.80923)"
        id="text1"
-       style="font-size:53.3333px;white-space:pre;shape-inside:url(#rect1);fill:#ffffff"><tspan
+       style="font-size:20.5147px;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#ffffff;stroke-width:1.00009;stroke-dasharray:none"><tspan
          x="135.31055"
-         y="442.22183"
-         id="tspan5"><tspan
-           style="font-family:'Cutive Mono';-inkscape-font-specification:'Cutive Mono'"
-           id="tspan1">chat</tspan><tspan
+         y="412.2433"
+         id="tspan6"><tspan
+           style="font-weight:300;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro Light'"
+           id="tspan3">chat</tspan><tspan
            style="font-family:'IBM Plex Mono';-inkscape-font-specification:'IBM Plex Mono'"
-           id="tspan2">ITS</tspan></tspan></text>
+           id="tspan4">ITS</tspan></tspan></text>
   </g>
 </svg>

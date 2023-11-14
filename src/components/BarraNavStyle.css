@@ -1,0 +1,12 @@
+.appBarLinks {
+    margin-left: auto;
+}
+.appBarLinks a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 400;
+}
+.appBarLinks a:hover {
+    color: #fff;
+    cursor: pointer;
+}
