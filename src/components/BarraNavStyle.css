@@ -1,5 +1,6 @@
 .appBarLinks {
     margin-left: auto;
+    flex-grow: 1;
 }
 .appBarLinks a {
     color: #fff;

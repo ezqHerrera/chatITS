@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:3000/posts';
-const ID_URL = 'http://localhost:3000/posts/:id';
+const API_URL = 'http://localhost:3000/api/posts';
+const ID_URL = 'http://localhost:3000/api/posts/:id';
 
 export async function getPosts() {
     const resp = await fetch(API_URL);
@@ -33,7 +33,7 @@ export async function deletePost(id) {
     return resp;
 }
 
-const USER_ID_URL = 'http://localhost:3000/users/:id';
+const USER_ID_URL = 'http://localhost:3000/api/users/:id';
 
 export async function getUserById(id) {
     const url = USER_ID_URL.replace(':id', id);
