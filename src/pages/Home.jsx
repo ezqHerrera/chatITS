@@ -7,8 +7,12 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { teal } from "@mui/material/colors";
@@ -22,73 +26,75 @@ const padded = {
     justifyContent: 'center'
 }
 
-function Home() {
+const Home = () => {
     const lista = usePosts();
     const posts = lista.posts;
 
     const theme = createTheme ({
         typography: {
-          fontFamily: [
-            'Source Code Pro',
-            'sans-serif'
-          ].join(','),
-        },});
+          fontFamily: ['Source Code Pro', 'sans-serif'].join(','),
+        },
+    });
 
     if (lista.length === 0) {
         return (
             <CircularProgress/>
         );
-    }
-    else {
+    } else {
         return (
-            <div style={padded}>
-                <div id="postsContainer">
-                    <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
+                <div style={padded}>
+                    <div id="postsContainer">
                         {posts.map(post => (
                             <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
                                 <CardHeader
-                                avatar={
-                                    <Avatar sx={{bgcolor: teal[700]}} aria-label="avatar">
-                                    사용자
-                                    </Avatar>
-                                }
-                                title={post.userId}
-                                subheader={post.createdAt}
+                                    avatar={
+                                        <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
+                                        用户
+                                        </Avatar>
+                                    }
+                                    title={post.userId}
+                                    subheader={post.createdAt}
                                 />
                                 <CardMedia
-                                component="img"
-                                image={post.url}
-                                alt="imagen del post"
-                                sx={{ maxHeight: 500 }}
+                                    component="img"
+                                    image={post.url}
+                                    alt=""
+                                    sx={{ maxHeight: 600 }}
                                 />
                                 <CardContent>
-                                <Typography variant="body1" color="text.primary" fontWeight='bold'>
-                                    {post.title}
-                                </Typography>
-                                <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                    {post.content}
-                                </Typography>
+                                    <Typography variant="body1" color="text.primary" fontWeight='bold'>
+                                        {post.title}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
+                                        {post.content}
+                                    </Typography>
                                 </CardContent>
 
                                 <CardActions disableSpacing>
+                                    <IconButton aria-label="fav">
+                                        <FavoriteIcon />
+                                    </IconButton>
 
-                                <IconButton aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                </IconButton>
+                                    <IconButton aria-label="share">
+                                        <ShareIcon />
+                                    </IconButton>
 
-                                <IconButton aria-label="share">
-                                    <ShareIcon />
-                                </IconButton>
+                                    <IconButton aria-label="edit">
+                                        <ModeEditIcon />
+                                    </IconButton>
 
+                                    <IconButton aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </CardActions>
                             </Card>
                         ))}
-                    </ThemeProvider>
+                    </div>
                 </div>
-            </div>
+            </ThemeProvider>
         );
     }
-
-}
+};
 
 export default Home;

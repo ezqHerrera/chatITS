@@ -35,6 +35,11 @@ export async function deletePost(id) {
 
 const USER_ID_URL = 'http://localhost:3000/api/users/:id';
 
+export async function getUsers() {
+    const resp = await fetch('http://localhost:3000/api/users');
+    return resp.json();
+}
+
 export async function getUserById(id) {
     const url = USER_ID_URL.replace(':id', id);
     const resp = await fetch(url);
@@ -42,7 +47,15 @@ export async function getUserById(id) {
 }
 
 export async function Login() {
-    const resp = await fetch('http://localhost:3000/login', {
+    const resp = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    return resp.json();
+}
+
+export async function Register() {
+    const resp = await fetch('http://localhost:3000/auth/register', {
         method: 'POST',
         body: JSON.stringify(data)
     });
