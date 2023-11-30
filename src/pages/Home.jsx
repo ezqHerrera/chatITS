@@ -18,6 +18,8 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
+import axios from "axios";
+import { UpdatePostModal } from "../components/PostModal";
 
 const padded = {
     paddingLeft: '3rem',
@@ -35,6 +37,17 @@ const Home = () => {
           fontFamily: ['Source Code Pro', 'sans-serif'].join(','),
         },
     });
+
+    const handleDelete = (id) => {
+        axios
+            .delete(`http://localhost:3000/api/posts/${id}`)
+            .then((response) => {
+                console.log(`Se eliminó el post con id ${id}`)
+            })
+            .catch((error) => {
+                console.error('Hubo un error: ', error)
+            });
+    };
 
     if (lista.length === 0) {
         return (
@@ -80,11 +93,11 @@ const Home = () => {
                                         <ShareIcon />
                                     </IconButton>
 
-                                    <IconButton aria-label="edit">
+                                    <IconButton aria-label="edit" onClick={() => UpdatePostModal(true, post.id)}>
                                         <ModeEditIcon />
                                     </IconButton>
 
-                                    <IconButton aria-label="delete">
+                                    <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </CardActions>

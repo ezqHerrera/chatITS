@@ -9,7 +9,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import logo from './assets/chat-its-logo.svg';
 
 import Home from './pages/Home';
-import {LoginForm} from './components/ModalForm';
+import {LoginForm, RegisterForm} from './components/ModalForm';
 
 function App() {
   return (
@@ -23,8 +23,8 @@ function App() {
               <a>Mis Posts</a>
               <a>Perfil y Cuenta</a>
               <ButtonGroup variant='text'>
-                <LoginForm>Iniciar sesión</LoginForm>
-                <Button sx={{color: '#90caf9'}}>Registrarse</Button>
+                <LoginForm/>
+                <RegisterForm/>
               </ButtonGroup>
             </div>
           </Toolbar>

@@ -26,6 +26,7 @@ const LoginForm = () => {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
+        textAlign: 'center'
     }
 
     const formStyle = {
@@ -54,16 +55,16 @@ const LoginForm = () => {
         setPassword(null);
         setIsloggedIn(false);
     }
-    // TODO retornar botón de CERRAR SESIÓN si está logueado
     return (
         <div>
             {isLoggedIn
                 ? <Button color='error' variant='text' onClick={logOut}>cerrar sesión</Button>
-                : <Button color='#90caf9' variant='text' onClick={handleOpen}>iniciar sesión</Button>
+                : <Button variant='text' onClick={handleOpen}>iniciar sesión</Button>
             }
             <Modal open={open} onClose={handleClose}>
                 <Box sx={modalStyle}>
-                    <h3 sx={'marginBottom' = 2}>Iniciar Sesión</h3>
+                    <h3 sx={{'marginBottom': 2}}>Iniciar Sesión</h3>
+
                     <form method='dialog' style={formStyle} onSubmit={handleSubmit}>
                         <label htmlFor="email">E-mail</label>
                         <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
@@ -82,4 +83,81 @@ const LoginForm = () => {
     );
 };
 
-export {LoginForm};
+const RegisterForm = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [isLoggedIn, setIsloggedIn] = useState(false);
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        textAlign: 'center'
+    }
+
+    const formStyle = {
+        display: 'flex',
+        textAlign: 'center',
+        flexDirection: 'column',
+        padding: '3em'
+    }
+
+    const handleRegister = (event) => {
+        event.preventDefault();
+        axios
+            .post('http://localhost:3000/auth/register', {username, password, email, avatar})
+            .then((response) => {
+                setOpen(false);
+                setIsloggedIn(true);
+                console.log(`Sesión iniciada desde ${email}`);
+            })
+            .catch((error) => {
+                console.log('Hubo un error:', error);
+            });
+    }
+    return (
+        <div>
+            {isLoggedIn
+                ? <Button color='error' variant='text' sx={{ display: 'none' }}>cerrar sesión</Button>
+                : <Button variant='text' onClick={handleOpen}>registrarse</Button>
+            }
+            <Modal open={open} onClose={handleClose}>
+                <Box sx={modalStyle}>
+                    <h3 sx={{'marginBottom': 2}}>Registrarse</h3>
+
+                    <form method='dialog' style={formStyle} onSubmit={handleRegister}>
+                        <label htmlFor="username">Nombre de usuario</label>
+                        <input id="username" type="text" value={username} onChange={(Event) => setUsername(Event.target.value)}/>
+
+                        <label htmlFor="email">E-mail</label>
+                        <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
+
+                        <label htmlFor="password">Contraseña</label>
+                        <input id="password" type="password" value={password} onChange={(Event) => setPassword(Event.target.value)}/>
+
+                        <label htmlFor="avatar">Imagen de perfil (URL)</label>
+                        <input id="avatar" type="url" value={avatar} onChange={(Event) => setAvatar(Event.target.value)}/>
+                        <ButtonGroup orientation='vertical' variant='text'>
+                            <Button type='submit' onClick={handleRegister}>registrarse</Button>
+                            <Button type='reset' onClick={handleClose}>cancelar</Button>
+                        </ButtonGroup>
+                    </form>
+                </Box>
+            </Modal>
+        </div>
+    );
+};
+
+export {LoginForm, RegisterForm};
