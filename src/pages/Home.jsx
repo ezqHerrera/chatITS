@@ -7,10 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Typography from '@mui/material/Typography';
@@ -85,17 +81,7 @@ const Home = () => {
                                 </CardContent>
 
                                 <CardActions disableSpacing>
-                                    <IconButton aria-label="fav">
-                                        <FavoriteIcon />
-                                    </IconButton>
-
-                                    <IconButton aria-label="share">
-                                        <ShareIcon />
-                                    </IconButton>
-
-                                    <IconButton aria-label="edit" onClick={() => UpdatePostModal(true, post.id)}>
-                                        <ModeEditIcon />
-                                    </IconButton>
+                                    <UpdatePostModal postId={post.id} showButton={true}/>
 
                                     <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
                                         <DeleteIcon />

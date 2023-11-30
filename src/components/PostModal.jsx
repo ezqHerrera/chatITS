@@ -166,14 +166,6 @@ const UpdatePostModal = ({showButton, postId}) => {
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        <IconButton aria-label="fav">
-                            <FavoriteIcon />
-                        </IconButton>
-
-                        <IconButton aria-label="share">
-                            <ShareIcon />
-                        </IconButton>
-
                         <IconButton aria-label="edit">
                             <ModeEditIcon />
                         </IconButton>
