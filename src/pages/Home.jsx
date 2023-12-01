@@ -15,7 +15,7 @@ import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
 import axios from "axios";
-import { UpdatePostModal } from "../components/PostModal";
+import { PostModal, UpdatePostModal } from "../components/PostModal";
 
 const padded = {
     paddingLeft: '3rem',
@@ -53,6 +53,7 @@ const Home = () => {
         return (
             <ThemeProvider theme={theme}>
                 <div style={padded}>
+                    <PostModal/>
                     <div id="postsContainer">
                         {posts.map(post => (
                             <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
