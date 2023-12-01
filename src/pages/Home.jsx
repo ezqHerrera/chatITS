@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
+import UserContextProvider from '../context/UserContext';
 import axios from "axios";
 import { PostModal, UpdatePostModal } from "../components/PostModal";
 
@@ -53,44 +54,46 @@ const Home = () => {
         return (
             <ThemeProvider theme={theme}>
                 <div style={padded}>
+                    <UserContextProvider>
                     <PostModal/>
-                    <div id="postsContainer">
-                        {posts.map(post => (
-                            <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
-                                <CardHeader
-                                    avatar={
-                                        <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
-                                        用户
-                                        </Avatar>
-                                    }
-                                    title={post.userId}
-                                    subheader={post.createdAt}
-                                />
-                                <CardMedia
-                                    component="img"
-                                    image={post.url}
-                                    alt=""
-                                    sx={{ maxHeight: 600 }}
-                                />
-                                <CardContent>
-                                    <Typography variant="body1" color="text.primary" fontWeight='bold'>
-                                        {post.title}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                        {post.content}
-                                    </Typography>
-                                </CardContent>
+                        <div id="postsContainer">
+                            {posts.map(post => (
+                                <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
+                                            用户
+                                            </Avatar>
+                                        }
+                                        title={post.userId}
+                                        subheader={post.createdAt}
+                                    />
+                                    <CardMedia
+                                        component="img"
+                                        image={post.url}
+                                        alt=""
+                                        sx={{ maxHeight: 600 }}
+                                    />
+                                    <CardContent>
+                                        <Typography variant="body1" color="text.primary" fontWeight='bold'>
+                                            {post.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
+                                            {post.content}
+                                        </Typography>
+                                    </CardContent>
 
-                                <CardActions disableSpacing>
-                                    <UpdatePostModal postId={post.id} showButton={true}/>
+                                    <CardActions disableSpacing>
+                                        <UpdatePostModal postId={post.id} showButton={true}/>
 
-                                    <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </CardActions>
-                            </Card>
-                        ))}
-                    </div>
+                                        <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </CardActions>
+                                </Card>
+                            ))}
+                        </div>
+                    </UserContextProvider>
                 </div>
             </ThemeProvider>
         );
