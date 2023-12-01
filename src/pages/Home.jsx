@@ -14,7 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
-import UserContextProvider from '../context/UserContext';
+import {UserContextProvider} from '../context/UserContext';
 import axios from "axios";
 import { PostModal, UpdatePostModal } from "../components/PostModal";
 

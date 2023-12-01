@@ -1,16 +1,16 @@
-import React from "react";
+import React, {useContext} from "react";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Modal from "@mui/material/Modal";
 
-import UserContext from '../context/UserContext';
+import {UserContext} from '../context/UserContext';
 
 // Modal para iniciar sesión
 const LoginForm = () => {
-    const {setUserId} = useContext(UserContext); // Uso el contexto para acceder a la propiedad userId
+    const setUserId = useContext(UserContext); // Uso el contexto para acceder a la propiedad userId
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -49,7 +49,7 @@ const LoginForm = () => {
                 setIsloggedIn(true);
                 const data = response.data;
                 const id = response.data.userId;
-                setUserId({id});
+                setUserId(id);
                 console.log(`Sesión iniciada desde ${data}`);
             })
             .catch((error) => {
