@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -9,8 +9,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
+import UserContext from '../context/UserContext';
+
 // Modal para crear un post
-const PostModal = ({userId}) => {
+const PostModal = () => {
+    const {userId} = useContext(UserContext);
+    console.log(userId);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [url, setUrl] = useState('');
