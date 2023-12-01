@@ -18,9 +18,9 @@ import Box from "@mui/material/Box";
 
 // Modal para iniciar sesión
 const PostModal = ({userId}) => {
-    const [title, setTitle] = useState('Escriba un título');
-    const [content, setContent] = useState('Escriba el contenido del post (280 caracteres máximo)');
-    const [url, setUrl] = useState('Inserte la URL de una imagen (opcional)');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [url, setUrl] = useState('');
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -64,33 +64,18 @@ const PostModal = ({userId}) => {
             <Button color='primary' variant='outlined' onClick={handleOpen}>crear post</Button>
             <Modal open={open} onClose={handleClose}>
                 <Box style={modalStyle}>
-                    <Card sx={{ maxWidth: 600, margin: '2rem', }}>
-                        <CardMedia
-                            onChange={(e) => setUrl(e.target.value)}
-                            component="img"
-                            image={url}
-                            alt=""
-                            sx={{ maxHeight: 600 }}
-                        />
-                        <CardContent>
-                            <Typography onChange={(e) => setTitle(e.target.value)} variant="body1" color="text.primary" fontWeight='bold'>
-                                {title}
-                            </Typography>
-                            <Typography onChange={(e) => setContent(e.target.value)} variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                {content}
-                            </Typography>
-                        </CardContent>
+                    <h2>Crear nuevo post</h2>
 
-                        <CardActions disableSpacing>
-                            <IconButton aria-label="edit">
-                                <EditIcon />
-                            </IconButton>
+                    <form method='dialog' style={formStyle} onSubmit={handlePost}>
+                        <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
+                        <input id='title' type='text' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
-                            <IconButton aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
+                        <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
+                        <input id='content' type='text' value={content} onChange={(e) => setContent(e.target.value)}/>
+
+                        <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
+                        <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                    </form>
 
                     <ButtonGroup variant='text' sx={{margin: 2}}>
                         <Button type="submit" onClick={handlePost}>crear post</Button>
@@ -152,33 +137,18 @@ const UpdatePostModal = ({showButton, postId}) => {
             }
             <Modal open={open} onClose={handleClose}>
                 <Box style={modalStyle}>
-                    <Card sx={{ maxWidth: 600, margin: '2rem', }}>
-                        <CardMedia
-                            onChange={(e) => setUrl(e.target.value)}
-                            component="img"
-                            image={url}
-                            alt=""
-                            sx={{ maxHeight: 600 }}
-                        />
-                        <CardContent>
-                            <Typography onChange={(e) => setTitle(e.target.value)} variant="body1" color="text.primary" fontWeight='bold'>
-                                {title}
-                            </Typography>
-                            <Typography onChange={(e) => setContent(e.target.value)} variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                {content}
-                            </Typography>
-                        </CardContent>
+                    <h2>Actualizar post</h2>
 
-                        <CardActions disableSpacing>
-                            <IconButton aria-label="edit">
-                                <EditIcon />
-                            </IconButton>
+                    <form method='dialog' style={formStyle} onSubmit={handleUpdate}>
+                        <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
+                        <input id='title' type='text' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
-                            <IconButton aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
+                        <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
+                        <input id='content' type='text' value={content} onChange={(e) => setContent(e.target.value)}/>
+
+                        <label htmlFor='url' placeholder="Inserte la url de una imagen (opcional)">URL</label>
+                        <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                    </form>
 
                     <ButtonGroup variant='text' sx={{margin: 2}}>
                         <Button type="submit" onClick={() => handleUpdate(postId)}>actualizar post</Button>
