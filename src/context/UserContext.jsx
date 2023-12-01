@@ -6,7 +6,7 @@ export default function UserContextProvider({children}) {
     const [users, setUsers] = useState([]);
 
     return (
-        <UserContext.Provider value = {{users, setUsers}}>
+        <UserContext.Provider value = {{userId, setUserId}}>
             {children}
         </UserContext.Provider>
     )

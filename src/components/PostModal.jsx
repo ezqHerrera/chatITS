@@ -3,20 +3,13 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { Typography } from "@mui/material";
-
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-// Modal para iniciar sesión
+// Modal para crear un post
 const PostModal = ({userId}) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -68,10 +61,10 @@ const PostModal = ({userId}) => {
 
                     <form method='dialog' style={formStyle} onSubmit={handlePost}>
                         <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
-                        <input id='title' type='text' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
                         <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
-                        <input id='content' type='text' value={content} onChange={(e) => setContent(e.target.value)}/>
+                        <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
 
                         <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
                         <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
@@ -87,10 +80,11 @@ const PostModal = ({userId}) => {
     );
 };
 
+// Modal para actualizar un post
 const UpdatePostModal = ({showButton, postId}) => {
-    const [title, setTitle] = useState('Escriba un título');
-    const [content, setContent] = useState('Escriba el contenido del post (280 caracteres máximo)');
-    const [url, setUrl] = useState('Inserte la URL de una imagen (opcional)');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [url, setUrl] = useState('');
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -102,6 +96,7 @@ const UpdatePostModal = ({showButton, postId}) => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 400,
+        bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
@@ -141,10 +136,10 @@ const UpdatePostModal = ({showButton, postId}) => {
 
                     <form method='dialog' style={formStyle} onSubmit={handleUpdate}>
                         <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
-                        <input id='title' type='text' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
                         <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
-                        <input id='content' type='text' value={content} onChange={(e) => setContent(e.target.value)}/>
+                        <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
 
                         <label htmlFor='url' placeholder="Inserte la url de una imagen (opcional)">URL</label>
                         <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>

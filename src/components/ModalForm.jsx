@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 
 // Modal para iniciar sesión
 const LoginForm = () => {
+    const [userId, setUserId] = useState();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggedIn, setIsloggedIn] = useState(false);
@@ -40,10 +41,12 @@ const LoginForm = () => {
         event.preventDefault();
         axios
             .post('http://localhost:3000/auth/login', {email, password})
-            .then((response) => {
+            .then(async(response) => {
                 setOpen(false);
                 setIsloggedIn(true);
-                console.log(`Sesión iniciada desde ${email}`);
+                const data = response.data;
+                setUserId(response.data.userId);
+                console.log(`Sesión iniciada desde ${data}`);
             })
             .catch((error) => {
                 console.log('Hubo un error:', error);
