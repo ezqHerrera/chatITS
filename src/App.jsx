@@ -4,16 +4,18 @@ import './components/BarraNavStyle.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import logo from './assets/chat-its-logo.svg';
 
 import Home from './pages/Home';
 import {LoginForm, RegisterForm} from './components/ModalForm';
+import { LoginContext } from './context/LoginContext';
 
 function App() {
+  const isLoggedIn = React.useContext(LoginContext);
   return (
     <>
+    <LoginContext.Provider value={isLoggedIn}>
       <Box sx={{ flexGrow: 1, display: 'flex' }}>
         <AppBar position="static" sx={{ backgroundColor: '#000', color: '#fff' }}>
           <Toolbar>
@@ -30,6 +32,7 @@ function App() {
           </Toolbar>
         </AppBar>
       </Box>
+    </LoginContext.Provider>
 
       <Home/>
     </>

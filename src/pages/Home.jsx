@@ -1,4 +1,5 @@
 import { CircularProgress } from "@mui/material";
+import {useContext} from 'react';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,7 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
-import {UserContextProvider} from '../context/UserContext';
+import {UserContext} from '../context/UserContext';
+import {LoginContext} from '../context/LoginContext';
 import axios from "axios";
 import { PostModal, UpdatePostModal } from "../components/PostModal";
 
@@ -28,6 +30,10 @@ const padded = {
 const Home = () => {
     const lista = usePosts();
     const posts = lista.posts;
+
+    const {isLoggedIn} = useContext(LoginContext);
+
+    const {userId} = useContext(UserContext);
 
     const theme = createTheme ({
         typography: {
@@ -54,46 +60,48 @@ const Home = () => {
         return (
             <ThemeProvider theme={theme}>
                 <div style={padded}>
-                    <UserContextProvider>
-                    <PostModal/>
-                        <div id="postsContainer">
-                            {posts.map(post => (
-                                <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
-                                    <CardHeader
-                                        avatar={
-                                            <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
-                                            用户
-                                            </Avatar>
-                                        }
-                                        title={post.userId}
-                                        subheader={post.createdAt}
-                                    />
-                                    <CardMedia
-                                        component="img"
-                                        image={post.url}
-                                        alt=""
-                                        sx={{ maxHeight: 600 }}
-                                    />
-                                    <CardContent>
-                                        <Typography variant="body1" color="text.primary" fontWeight='bold'>
-                                            {post.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                            {post.content}
-                                        </Typography>
-                                    </CardContent>
+                    <LoginContext.Provider value={isLoggedIn}>
+                        <UserContext.Provider value={userId}>
+                            <div id="postsContainer">
+                            <PostModal/>
+                                {posts.map(post => (
+                                    <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
+                                                🈲
+                                                </Avatar>
+                                            }
+                                            title={post.userId}
+                                            subheader={post.createdAt}
+                                        />
+                                        <CardMedia
+                                            component="img"
+                                            image={post.url}
+                                            alt=""
+                                            sx={{ maxHeight: 600 }}
+                                        />
+                                        <CardContent>
+                                            <Typography variant="body1" color="text.primary" fontWeight='bold'>
+                                                {post.title}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
+                                                {post.content}
+                                            </Typography>
+                                        </CardContent>
 
-                                    <CardActions disableSpacing>
-                                        <UpdatePostModal postId={post.id} showButton={true}/>
+                                        <CardActions disableSpacing>
+                                            <UpdatePostModal postId={post.id} showButton={true}/>
 
-                                        <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </CardActions>
-                                </Card>
-                            ))}
-                        </div>
-                    </UserContextProvider>
+                                            <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Card>
+                                ))}
+                            </div>
+                        </UserContext.Provider>
+                    </LoginContext.Provider>
                 </div>
             </ThemeProvider>
         );

@@ -1,20 +1,22 @@
-import React, {useContext} from "react";
+import React from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 
 import IconButton from "@mui/material/IconButton";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-import {UserContext} from '../context/UserContext';
+import { UserContext } from "../context/UserContext";
+import { LoginContext } from "../context/LoginContext";
 
 // Modal para crear un post
 const PostModal = () => {
+    const isLoggedIn = useContext(LoginContext);
     const userId = useContext(UserContext);
-    console.log(userId);
+
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [url, setUrl] = useState('');
@@ -58,34 +60,41 @@ const PostModal = () => {
 
     return (
         <div>
-            <Button color='primary' variant='outlined' onClick={handleOpen}>crear post</Button>
-            <Modal open={open} onClose={handleClose}>
-                <Box style={modalStyle}>
-                    <h2>Crear nuevo post</h2>
+            <LoginContext.Provider value={isLoggedIn}>
+                {isLoggedIn
+                    ? <Button color='primary' variant='outlined' onClick={handleOpen}>crear post</Button>
+                    : <Button sx={{display: 'none'}}/>
+                }
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={modalStyle}>
+                        <h2>Crear nuevo post</h2>
 
-                    <form method='dialog' style={formStyle} onSubmit={handlePost}>
-                        <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
-                        <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        <form method='dialog' style={formStyle} onSubmit={handlePost}>
+                            <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
+                            <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
-                        <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
-                        <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
+                            <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
+                            <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
 
-                        <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
-                        <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                    </form>
+                            <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
+                            <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                        </form>
 
-                    <ButtonGroup variant='text' sx={{margin: 2}}>
-                        <Button type="submit" onClick={handlePost}>crear post</Button>
-                        <Button type="reset" onClick={handleClose}>cancelar</Button>
-                    </ButtonGroup>
-                </Box>
-            </Modal>
+                        <ButtonGroup variant='text' sx={{margin: 2}}>
+                            <Button type="submit" onClick={handlePost}>crear post</Button>
+                            <Button type="reset" onClick={handleClose}>cancelar</Button>
+                        </ButtonGroup>
+                    </Box>
+                </Modal>
+            </LoginContext.Provider>
         </div>
     );
 };
 
 // Modal para actualizar un post
 const UpdatePostModal = ({showButton, postId}) => {
+    const isLoggedIn = useContext(LoginContext);
+
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [url, setUrl] = useState('');
@@ -129,32 +138,34 @@ const UpdatePostModal = ({showButton, postId}) => {
 
     return (
         <div>
-            {showButton &&
-                <IconButton aria-label="edit" onClick={handleOpen}>
-                    <EditIcon />
-                </IconButton>
-            }
-            <Modal open={open} onClose={handleClose}>
-                <Box style={modalStyle}>
-                    <h2>Actualizar post</h2>
+            <LoginContext.Provider value={isLoggedIn}>
+                {showButton &&
+                    <IconButton aria-label="edit" onClick={handleOpen}>
+                        <EditIcon />
+                    </IconButton>
+                }
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={modalStyle}>
+                        <h2>Actualizar post</h2>
 
-                    <form method='dialog' style={formStyle} onSubmit={handleUpdate}>
-                        <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
-                        <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        <form method='dialog' style={formStyle} onSubmit={handleUpdate}>
+                            <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
+                            <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
 
-                        <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
-                        <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
+                            <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
+                            <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
 
-                        <label htmlFor='url' placeholder="Inserte la url de una imagen (opcional)">URL</label>
-                        <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                    </form>
+                            <label htmlFor='url' placeholder="Inserte la url de una imagen (opcional)">URL</label>
+                            <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                        </form>
 
-                    <ButtonGroup variant='text' sx={{margin: 2}}>
-                        <Button type="submit" onClick={() => handleUpdate(postId)}>actualizar post</Button>
-                        <Button type="reset" onClick={handleClose}>cancelar</Button>
-                    </ButtonGroup>
-                </Box>
-            </Modal>
+                        <ButtonGroup variant='text' sx={{margin: 2}}>
+                            <Button type="submit" onClick={() => handleUpdate(postId)}>actualizar post</Button>
+                            <Button type="reset" onClick={handleClose}>cancelar</Button>
+                        </ButtonGroup>
+                    </Box>
+                </Modal>
+            </LoginContext.Provider>
         </div>
     );
 };

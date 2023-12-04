@@ -1,20 +1,21 @@
-import React, {useContext} from "react";
+import React from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Modal from "@mui/material/Modal";
 
-import {UserContext} from '../context/UserContext';
+import { UserContext } from "../context/UserContext";
+import { LoginContext } from "../context/LoginContext";
 
 // Modal para iniciar sesión
 const LoginForm = () => {
-    const setUserId = useContext(UserContext); // Uso el contexto para acceder a la propiedad userId
+    const [userId, setUserId] = useState(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsloggedIn] = useState(false);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -45,12 +46,12 @@ const LoginForm = () => {
         axios
             .post('http://localhost:3000/auth/login', {email, password})
             .then(async(response) => {
+                const data = await response.data;
                 setOpen(false);
-                setIsloggedIn(true);
-                const data = response.data;
-                const id = response.data.userId;
-                setUserId(id);
-                console.log(`Sesión iniciada desde ${data}`);
+                setIsLoggedIn(true);
+                setUserId(data.userId);
+                console.log(`userId: `, data.userId);
+                console.log(`Sesión iniciada desde ${email}`);
             })
             .catch((error) => {
                 console.log('Hubo un error:', error);
@@ -60,42 +61,48 @@ const LoginForm = () => {
     const logOut = () => {
         setEmail(null);
         setPassword(null);
-        setIsloggedIn(false);
+        setUserId(null);
+        setIsLoggedIn(false);
     }
     return (
         <div>
-            {isLoggedIn
-                ? <Button color='error' variant='text' onClick={logOut}>cerrar sesión</Button>
-                : <Button variant='text' onClick={handleOpen}>iniciar sesión</Button>
-            }
-            <Modal open={open} onClose={handleClose}>
-                <Box sx={modalStyle}>
-                    <h3 sx={{'marginBottom': 2}}>Iniciar Sesión</h3>
+            <LoginContext.Provider value={isLoggedIn}>
+                <UserContext.Provider value={userId}>
+                {isLoggedIn
+                    ? <Button color='error' variant='text' onClick={logOut}>cerrar sesión</Button>
+                    : <Button variant='text' onClick={handleOpen}>iniciar sesión</Button>
+                }
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={modalStyle}>
+                        <h3 sx={{'marginBottom': 2}}>Iniciar Sesión</h3>
 
-                    <form method='dialog' style={formStyle} onSubmit={handleSubmit}>
-                        <label htmlFor="email">E-mail</label>
-                        <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
+                        <form method='dialog' style={formStyle} onSubmit={handleSubmit}>
+                            <label htmlFor="email">E-mail</label>
+                            <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
 
-                        <label htmlFor="password">Contraseña</label>
-                        <input id="password" type="password" value={password} onChange={(Event) => setPassword(Event.target.value)}/>
+                            <label htmlFor="password">Contraseña</label>
+                            <input id="password" type="password" value={password} onChange={(Event) => setPassword(Event.target.value)}/>
 
-                        <ButtonGroup orientation='vertical' variant='text'>
-                            <Button type='submit' onClick={handleSubmit}>iniciar sesión</Button>
-                            <Button type='reset' onClick={handleClose}>Cancelar</Button>
-                        </ButtonGroup>
-                    </form>
-                </Box>
-            </Modal>
+                            <ButtonGroup orientation='vertical' variant='text'>
+                                <Button type='submit' onClick={handleSubmit}>iniciar sesión</Button>
+                                <Button type='reset' onClick={handleClose}>Cancelar</Button>
+                            </ButtonGroup>
+                        </form>
+                    </Box>
+                </Modal>
+                </UserContext.Provider>
+            </LoginContext.Provider>
         </div>
     );
 };
 
 const RegisterForm = () => {
+    const {isLoggedIn} = useContext(LoginContext);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [avatar, setAvatar] = useState('');
-    const [isLoggedIn, setIsloggedIn] = useState(false);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -127,8 +134,7 @@ const RegisterForm = () => {
             .post('http://localhost:3000/auth/register', {username, password, email, avatar})
             .then((response) => {
                 setOpen(false);
-                setIsloggedIn(true);
-                console.log(`Sesión iniciada desde ${email}`);
+                console.log(`Usuario registrado con éxito. Inicie sesión desde ${email}`);
             })
             .catch((error) => {
                 console.log('Hubo un error:', error);
@@ -136,10 +142,9 @@ const RegisterForm = () => {
     }
     return (
         <div>
-            {isLoggedIn
-                ? <Button color='error' variant='text' sx={{ display: 'none' }}>cerrar sesión</Button>
-                : <Button variant='text' onClick={handleOpen}>registrarse</Button>
-            }
+            {!isLoggedIn && (
+                <Button variant='text' onClick={handleOpen}>registrarse</Button>
+            )}
             <Modal open={open} onClose={handleClose}>
                 <Box sx={modalStyle}>
                     <h3 sx={{'marginBottom': 2}}>Registrarse</h3>
