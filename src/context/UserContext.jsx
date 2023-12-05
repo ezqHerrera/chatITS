@@ -10,5 +10,5 @@ export const UserContextProvider = ({children}) => {
         <UserContext.Provider value = {{userId, setUserId}}>
             {children}
         </UserContext.Provider>
-    )
-}
+    );
+};

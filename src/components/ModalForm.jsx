@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Modal from "@mui/material/Modal";
 
-import { UserContext } from "../context/UserContext";
 import { LoginContext } from "../context/LoginContext";
+import { UserContextProvider } from "../context/UserContext";
 
 // Modal para iniciar sesión
-const LoginForm = () => {
-    const [userId, setUserId] = useState(0);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+function LoginForm () {
+    const { isLoggedIn } = useContext(LoginContext);
+    const { userId } = useContext(LoginContext);
+    const { login } = useContext(LoginContext);
+    const { logout } = useContext(LoginContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,57 +49,47 @@ const LoginForm = () => {
             .post('http://localhost:3000/auth/login', {email, password})
             .then(async(response) => {
                 const data = await response.data;
-                setOpen(false);
-                setIsLoggedIn(true);
-                setUserId(data.userId);
+                login(data.userId);
                 console.log(`userId: `, data.userId);
                 console.log(`Sesión iniciada desde ${email}`);
+                setOpen(false);
             })
             .catch((error) => {
                 console.log('Hubo un error:', error);
             });
     }
 
-    const logOut = () => {
-        setEmail(null);
-        setPassword(null);
-        setUserId(null);
-        setIsLoggedIn(false);
-    }
     return (
         <div>
-            <LoginContext.Provider value={isLoggedIn}>
-                <UserContext.Provider value={userId}>
-                {isLoggedIn
-                    ? <Button color='error' variant='text' onClick={logOut}>cerrar sesión</Button>
-                    : <Button variant='text' onClick={handleOpen}>iniciar sesión</Button>
-                }
-                <Modal open={open} onClose={handleClose}>
-                    <Box sx={modalStyle}>
-                        <h3 sx={{'marginBottom': 2}}>Iniciar Sesión</h3>
+            {isLoggedIn
+                ? <Button color='error' variant='text' onClick={logout}>cerrar sesión</Button>
+                : <Button variant='text' onClick={handleOpen}>iniciar sesión</Button>
+            }
+            <Modal open={open} onClose={handleClose}>
+                <Box sx={modalStyle}>
+                    <h3 sx={{'marginBottom': 2}}>Iniciar Sesión</h3>
 
-                        <form method='dialog' style={formStyle} onSubmit={handleSubmit}>
-                            <label htmlFor="email">E-mail</label>
-                            <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
+                    <form method='dialog' style={formStyle} onSubmit={handleSubmit}>
+                        <label htmlFor="email">E-mail</label>
+                        <input id="email" type="email" value={email} onChange={(Event) => setEmail(Event.target.value)}/>
 
-                            <label htmlFor="password">Contraseña</label>
-                            <input id="password" type="password" value={password} onChange={(Event) => setPassword(Event.target.value)}/>
+                        <label htmlFor="password">Contraseña</label>
+                        <input id="password" type="password" value={password} onChange={(Event) => setPassword(Event.target.value)}/>
 
-                            <ButtonGroup orientation='vertical' variant='text'>
-                                <Button type='submit' onClick={handleSubmit}>iniciar sesión</Button>
-                                <Button type='reset' onClick={handleClose}>Cancelar</Button>
-                            </ButtonGroup>
-                        </form>
-                    </Box>
-                </Modal>
-                </UserContext.Provider>
-            </LoginContext.Provider>
+                        <ButtonGroup orientation='vertical' variant='text'>
+                            <Button type='submit' onClick={handleSubmit}>iniciar sesión</Button>
+                            <Button type='reset' onClick={handleClose}>Cancelar</Button>
+                        </ButtonGroup>
+                    </form>
+                </Box>
+            </Modal>
         </div>
     );
 };
 
-const RegisterForm = () => {
-    const {isLoggedIn} = useContext(LoginContext);
+// Modal para registrar un usuario
+function RegisterForm() {
+    const { isLoggedIn } = useContext(LoginContext);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -161,7 +153,7 @@ const RegisterForm = () => {
 
                         <label htmlFor="avatar">Imagen de perfil (URL)</label>
                         <input id="avatar" type="url" value={avatar} onChange={(Event) => setAvatar(Event.target.value)}/>
-                        <ButtonGroup orientation='vertical' variant='text'>
+                        <ButtonGroup variant='text'>
                             <Button type='submit' onClick={handleRegister}>registrarse</Button>
                             <Button type='reset' onClick={handleClose}>cancelar</Button>
                         </ButtonGroup>

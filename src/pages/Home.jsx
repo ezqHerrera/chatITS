@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import {useContext} from 'react';
+import { useContext } from 'react';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,11 +12,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { teal } from "@mui/material/colors";
 
 import usePosts from '../hooks/usePosts';
-import {UserContext} from '../context/UserContext';
-import {LoginContext} from '../context/LoginContext';
+import { LoginContext } from "../context/LoginContext";
+import { UserContext, UserContextProvider } from '../context/UserContext';
 import axios from "axios";
 import { PostModal, UpdatePostModal } from "../components/PostModal";
 
@@ -27,13 +26,12 @@ const padded = {
     justifyContent: 'center'
 }
 
-const Home = () => {
+export default function Home() {
+    const isLoggedIn = useContext(LoginContext);
     const lista = usePosts();
     const posts = lista.posts;
 
-    const {isLoggedIn} = useContext(LoginContext);
-
-    const {userId} = useContext(UserContext);
+    const userId = useContext(UserContext);
 
     const theme = createTheme ({
         typography: {
@@ -60,52 +58,50 @@ const Home = () => {
         return (
             <ThemeProvider theme={theme}>
                 <div style={padded}>
-                    <LoginContext.Provider value={isLoggedIn}>
-                        <UserContext.Provider value={userId}>
-                            <div id="postsContainer">
-                            <PostModal/>
-                                {posts.map(post => (
-                                    <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar sx={{bgcolor: teal[600]}} aria-label="avatar">
-                                                🈲
-                                                </Avatar>
-                                            }
-                                            title={post.userId}
-                                            subheader={post.createdAt}
-                                        />
-                                        <CardMedia
-                                            component="img"
-                                            image={post.url}
-                                            alt=""
-                                            sx={{ maxHeight: 600 }}
-                                        />
-                                        <CardContent>
-                                            <Typography variant="body1" color="text.primary" fontWeight='bold'>
-                                                {post.title}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
-                                                {post.content}
-                                            </Typography>
-                                        </CardContent>
+                    <UserContextProvider value={userId}>
+                        <div id="postsContainer">
 
-                                        <CardActions disableSpacing>
-                                            <UpdatePostModal postId={post.id} showButton={true}/>
+                        {isLoggedIn == true && (<PostModal userId={userId}/>)}
 
-                                            <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </CardActions>
-                                    </Card>
-                                ))}
-                            </div>
-                        </UserContext.Provider>
-                    </LoginContext.Provider>
+                            {posts.map(post => (
+                                <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar aria-label="avatar">
+                                            {post.avatar}
+                                            </Avatar>
+                                        }
+                                        title={post.userId}
+                                        subheader={post.createdAt}
+                                    />
+                                    <CardMedia
+                                        component="img"
+                                        image={post.url}
+                                        alt=""
+                                        sx={{ maxHeight: 600 }}
+                                    />
+                                    <CardContent>
+                                        <Typography variant="body1" color="text.primary" fontWeight='bold'>
+                                            {post.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.primary" sx={{ maxHeight: 500 }}>
+                                            {post.content}
+                                        </Typography>
+                                    </CardContent>
+
+                                    <CardActions disableSpacing>
+                                        <UpdatePostModal postId={post.id} showButton={true}/>
+
+                                        <IconButton aria-label="delete" onClick={() => handleDelete(post.id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </CardActions>
+                                </Card>
+                            ))}
+                        </div>
+                    </UserContextProvider>
                 </div>
             </ThemeProvider>
         );
     }
 };
-
-export default Home;
