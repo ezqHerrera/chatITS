@@ -6,14 +6,16 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import logo from './assets/chat-its-logo.svg';
 
-import { LoginContext, LoginContextProvider } from './context/LoginContext';
+import { LoginContextProvider } from './context/LoginContext';
 import { LoginForm, RegisterForm } from './components/ModalForm';
 import Home from './pages/Home';
+import { UserContextProvider } from './context/UserContext';
 
 function App() {
   return (
     <>
       <LoginContextProvider>
+        <UserContextProvider>
         <Box sx={{ flexGrow: 1, display: 'flex' }}>
           <AppBar position="static" sx={{ backgroundColor: '#000', color: '#fff' }}>
             <Toolbar>
@@ -29,8 +31,8 @@ function App() {
             </Toolbar>
           </AppBar>
         </Box>
-
-        <Home/>
+          <Home/>
+        </UserContextProvider>
       </LoginContextProvider>
     </>
   )

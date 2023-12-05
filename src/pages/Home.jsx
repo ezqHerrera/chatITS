@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 import usePosts from '../hooks/usePosts';
 import { LoginContext } from "../context/LoginContext";
-import { UserContext, UserContextProvider } from '../context/UserContext';
+import { UserContext } from '../context/UserContext';
 import axios from "axios";
 import { PostModal, UpdatePostModal } from "../components/PostModal";
 
@@ -27,11 +27,10 @@ const padded = {
 }
 
 export default function Home() {
-    const isLoggedIn = useContext(LoginContext);
+    const { isLoggedIn } = useContext(LoginContext);
+    const { userId } = useContext(UserContext);
     const lista = usePosts();
     const posts = lista.posts;
-
-    const userId = useContext(UserContext);
 
     const theme = createTheme ({
         typography: {
@@ -58,10 +57,8 @@ export default function Home() {
         return (
             <ThemeProvider theme={theme}>
                 <div style={padded}>
-                    <UserContextProvider value={userId}>
                         <div id="postsContainer">
-
-                        {isLoggedIn == true && (<PostModal userId={userId}/>)}
+                        {isLoggedIn && (<PostModal userId={userId}/>)}
 
                             {posts.map(post => (
                                 <Card key={post.id} sx={{ maxWidth: 600, margin: '2rem', }}>
@@ -99,7 +96,6 @@ export default function Home() {
                                 </Card>
                             ))}
                         </div>
-                    </UserContextProvider>
                 </div>
             </ThemeProvider>
         );

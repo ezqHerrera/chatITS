@@ -9,11 +9,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
-import { LoginContext, LoginContextProvider } from "../context/LoginContext";
+import { UserContext } from "../context/UserContext";
 
 // Modal para crear un post
 const PostModal = () => {
-    const { userId } = useContext(LoginContext);
+    const { userId } = useContext(UserContext);
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -57,33 +57,30 @@ const PostModal = () => {
     }
 
     return (
-        <LoginContextProvider value={userId}>
-            <div>
-                <Button color='primary' variant='outlined' onClick={handleOpen}>crear post</Button>
-                <Modal open={open} onClose={handleClose}>
-                    <Box sx={modalStyle}>
-                        <h2>Crear nuevo post</h2>
+        <div>
+            <Button color='primary' variant='outlined' onClick={handleOpen}>crear post</Button>
+            <Modal open={open} onClose={handleClose}>
+                <Box sx={modalStyle}>
+                    <h2>Crear nuevo post</h2>
 
-                        <form method='dialog' style={formStyle} onSubmit={handlePost}>
-                            <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
-                            <input id='title' type='text' maxLength='30' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                    <form method='dialog' style={formStyle} onSubmit={handlePost}>
+                        <label htmlFor='title' placeholder="Ingrese el título del post">Título</label>
+                        <input id='title' type='text' maxLength='30' value={title} required onChange={(e) => setTitle(e.target.value)}/>
 
-                            <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
-                            <input id='content' type='text' maxLength='280' value={content} onChange={(e) => setContent(e.target.value)}/>
+                        <label htmlFor='content' placeholder="Ingrese el contenido del post">Contenido</label>
+                        <input id='content' type='text' maxLength='280' value={content} required onChange={(e) => setContent(e.target.value)}/>
 
-                            <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
-                            <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                        </form>
+                        <label htmlFor='url' placeholder="Ingrese la url de una imagen (opcional)">URL</label>
+                        <input id='url' type='url' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                    </form>
 
-                        <ButtonGroup variant='text' sx={{margin: 2}}>
-                            <Button type="submit" onClick={handlePost}>crear post</Button>
-                            <Button type="reset" onClick={handleClose}>cancelar</Button>
-                        </ButtonGroup>
-                    </Box>
-                </Modal>
-            </div>
-
-        </LoginContextProvider>
+                    <ButtonGroup variant='text' sx={{margin: 2}}>
+                        <Button type="submit" onClick={handlePost}>crear post</Button>
+                        <Button type="reset" onClick={handleClose}>cancelar</Button>
+                    </ButtonGroup>
+                </Box>
+            </Modal>
+        </div>
     );
 };
 

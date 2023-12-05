@@ -7,12 +7,12 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Modal from "@mui/material/Modal";
 
 import { LoginContext } from "../context/LoginContext";
-import { UserContextProvider } from "../context/UserContext";
+import { UserContext, UserContextProvider } from "../context/UserContext";
 
 // Modal para iniciar sesión
 function LoginForm () {
     const { isLoggedIn } = useContext(LoginContext);
-    const { userId } = useContext(LoginContext);
+    const { setUserId } = useContext(UserContext);
     const { login } = useContext(LoginContext);
     const { logout } = useContext(LoginContext);
 
@@ -50,6 +50,7 @@ function LoginForm () {
             .then(async(response) => {
                 const data = await response.data;
                 login(data.userId);
+                setUserId(data.userId);
                 console.log(`userId: `, data.userId);
                 console.log(`Sesión iniciada desde ${email}`);
                 setOpen(false);
