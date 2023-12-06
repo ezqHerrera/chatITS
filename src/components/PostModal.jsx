@@ -52,7 +52,7 @@ const PostModal = () => {
                 setOpen(false);
             })
             .catch((error) => {
-                console.log('Hubo un error:', error);
+                console.error('Hubo un error:', error);
             });
     }
 

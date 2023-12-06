@@ -51,7 +51,6 @@ function LoginForm () {
                 const data = await response.data;
                 login(data.userId);
                 setUserId(data.userId);
-                console.log(`userId: `, data.userId);
                 console.log(`Sesión iniciada desde ${email}`);
                 setOpen(false);
             })
